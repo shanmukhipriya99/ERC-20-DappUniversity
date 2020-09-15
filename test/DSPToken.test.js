@@ -34,4 +34,13 @@ contract('DSPToken', function(accounts) {
             assert.equal(1000000, adminBalance.toNumber(), 'allocates the initial supply to the admin');
         });
     });
+
+    it('transfers ownership', () => {
+        return DSPToken.deployed().then((instance) => {
+            tokenInstance = instance;
+            return tokenInstance.transfer().call(accounts[1], 999999999999999999999999);
+        }).then(assert.fail).catch((err) => {
+            assert(err.message.indexOf('revert') >=0, 'error message must contain revert');
+        });
+    });
 });
